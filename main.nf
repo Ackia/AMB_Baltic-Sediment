@@ -56,7 +56,7 @@ process fastqc {
 
                           script:
                               """
-                              fastqc -t ${params.cpus} $reads
+                              fastqc $reads
                               """
                       }
 
