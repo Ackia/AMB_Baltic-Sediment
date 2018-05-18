@@ -49,7 +49,7 @@ process fastqc {
                           publishDir params.outdir, mode: 'copy'
 
                           input:
-                              file reads from trimmed_reads_se.concat(trimmed_reads_pe).collect()
+                              file reads from trimmed_reads_pe.collect()
 
                           output:
                               file "*_fastqc.{zip,html}" into fastqc_results
