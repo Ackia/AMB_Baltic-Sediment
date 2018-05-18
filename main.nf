@@ -2,7 +2,7 @@
 /*
  * pipeline input parameters
  */
-prarams.raw = ""
+params.reads = ""
 params.results = ""
 params.cpus = "2"
 params.mem = "8"
