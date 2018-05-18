@@ -35,14 +35,14 @@ process trimming_pe {
                               set val(id), file(read1), file(read2) from reads_atropos_pe
 
                           output:
-                              set val(id), file("${id}_R1.fastq"), file("${id}_R2.fastq") into trimmed_reads_pe
+                              set val(id), file("${id}_R1_trimmed.fastq"), file("${id}_R2_trimmed.fastq") into trimmed_reads_pe
 
                           script:
                               """
                               mkdir trimmed
                               atropos -a TGGAATTCTCGGGTGCCAAGG -B AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT \
                                   -T 4 -m 50 --max-n 0 -q 20,20 -pe1 $read1 -pe2 $read2 \
-                                  -o ${id}_R1.fastq -p ${id}_R2.fastq
+                                  -o ${id}_R1_trimmed.fastq -p ${id}_R2_trimmed.fastq
                               """
                       }
 process fastqc {
