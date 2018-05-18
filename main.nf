@@ -5,7 +5,7 @@
 params.reads = ""
 params.outdir = ""
 params.cpus = "2"
-params.mem = "8"
+params.mem = "8GB"
 
 
 // requires --reads for Assembly
