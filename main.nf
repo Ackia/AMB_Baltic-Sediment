@@ -13,7 +13,7 @@ if (params.reads == '') {
     exit 1, '--reads is a required paramater for Meta-Assembly pipeline'
 }
 
-// requires --results for Assembly
+// requires --outdir for Assembly
 if (params.outdir == '') {
     exit 1, '--outdir is a required paramater for Meta-Assembly pipeline'
 }
@@ -22,7 +22,7 @@ println """\
          Hybrid Assembly- N F   P I P E L I N E
          ===================================
          reads        : ${params.reads}
-         outdir       : ${params.results}
+         outdir       : ${params.outdir}
          """
          .stripIndent()
 
