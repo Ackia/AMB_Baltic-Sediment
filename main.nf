@@ -3,7 +3,7 @@
  * pipeline input parameters
  */
 params.reads = ""
-params.results = ""
+params.outdir = ""
 params.cpus = "2"
 params.mem = "8"
 
@@ -29,7 +29,7 @@ println """\
          reads_atropos_pe = Channel
                       .fromFilePairs(params.reads + '*_{1,2}.fastq.gz', size: 2, flat: true)
 process trimming_pe {
-                          publishDir params.output, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               set val(id), file(read1), file(read2) from reads_atropos_pe
@@ -46,7 +46,7 @@ process trimming_pe {
                               """
                       }
 process fastqc {
-                          publishDir params.output, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               file reads from trimmed_reads_se.concat(trimmed_reads_pe).collect()
@@ -61,7 +61,7 @@ process fastqc {
                       }
 
 process multiqc {
-                          publishDir params.output, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               file 'fastqc/*' from fastqc_results.collect()
