@@ -44,11 +44,14 @@ process trimming_pe {
                                   -o ${id}_R1_trimmed.fastq -p ${id}_R2_trimmed.fastq
                               """
                       }
+
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades}
+
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
 
                           input:
-                              file reads from trimmed_reads_pe.collect()
+                              file reads from reads_for_fastq.collect()
 
                           output:
                               file "*_fastqc.{zip,html}" into fastqc_results
@@ -72,4 +75,33 @@ process multiqc {
                               """
                               multiqc .
                               """
+}
+process megahit {
+                            publishDir params.outdir, mode: 'copy'
+
+                            input:
+                                set val(id), file(read1), file(read2) from reads_for_megahit
+
+                            output:
+                                file'assembly.fasta' into megahit_result
+
+                            script:
+                                """
+
+                                """
+}
+process meta-spades {
+                            publishDir params.outdir, mode: 'copy'
+
+                            input:
+                                set val(id), file(read1), file(read2) from reads_for_spades
+
+                            output:
+                                file'assembly.fasta' into spades_result
+
+                            script:
+                                """
+
+                                """
+
 }
