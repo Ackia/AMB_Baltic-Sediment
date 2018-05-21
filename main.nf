@@ -91,7 +91,7 @@ process megahit {
                                 """
 }
 process metaspades {
-                            publishDir params.outdir/spades, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                                 set val(id), file(read1), file(read2) from reads_for_spades
@@ -101,7 +101,7 @@ process metaspades {
 
                             script:
                                 """
-                                spades.py -o ${params.outdir}/spades --meta -1 $read1 -2 $read2 -t $params.cpus -m $params.mem
+                                spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus -m $params.mem
                                 """
 
 }
