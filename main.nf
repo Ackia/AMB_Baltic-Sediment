@@ -118,11 +118,11 @@ process metabat {
 
                             script:
                                 """
-                                bowtie2-build megahitassembly final.contigs
-                                bowtie2 -x final.contigs -1 tara_reads_R1.fastq.gz -2 tara_reads_R2.fastq.gz | \
-                                samtools view -bS -o tara_to_sort.bam
-                                samtools sort tara_to_sort.bam -o tara.bam
-                                samtools index tara.bam
-                                runMetaBat.sh -m 1500 final.contigs.fa tara.bam
+                                bowtie2-build $megahitassembly final.contigs
+                                bowtie2 -x final.contigs -1 $read1 -2 $read2 | \
+                                samtools view -bS -o megahit_to_sort.bam
+                                samtools sort megahit_to_sort.bam -o megahit.bam
+                                samtools index megahit.bam
+                                runMetaBat.sh -m 1500 $megahitassembly megahit.bam
                                 """
 }
