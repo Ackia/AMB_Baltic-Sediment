@@ -45,7 +45,7 @@ process trimming_pe {
                               """
                       }
 
-trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades}
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2}
 
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
@@ -83,7 +83,7 @@ process megahit {
                                 set val(id), file(read1), file(read2) from reads_for_megahit
 
                             output:
-                                file"${id}.contigs.fa" into megahit_result
+                                set val(id), file"${id}.contigs.fa" into megahit_result
 
                             script:
                                 """
@@ -97,11 +97,32 @@ process metaspades {
                                 set val(id), file(read1), file(read2) from reads_for_spades
 
                             output:
-                                file'assembly.fasta' into spades_result
+                                set val(id), file'assembly.fasta' into spades_result
 
                             script:
                                 """
                                 spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus
                                 """
 
+}
+process metabat {
+                            publishDir params.outdir, mode: 'copy'
+
+                            input:
+                                set val(id), file(megahitassembly), from megahit_result
+
+
+                            output:
+                                file'assembly.fasta' into spades_result
+                                file(read1), file(read2) from reads_for_metabin
+
+                            script:
+                                """
+                                bowtie2-build megahitassembly final.contigs
+                                bowtie2 -x final.contigs -1 tara_reads_R1.fastq.gz -2 tara_reads_R2.fastq.gz | \
+                                samtools view -bS -o tara_to_sort.bam
+                                samtools sort tara_to_sort.bam -o tara.bam
+                                samtools index tara.bam
+                                runMetaBat.sh -m 1500 final.contigs.fa tara.bam
+                                """
 }
