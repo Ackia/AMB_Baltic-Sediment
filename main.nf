@@ -101,7 +101,7 @@ process metaspades {
 
                             script:
                                 """
-                                spades.py -o . --meta -1 $read1 -2 $read2 --careful -t $params.cpus -m $params.mem
+                                spades.py -o . --meta -1 $read1 -2 $read2 -t $params.cpus -m $params.mem
                                 """
 
 }
