@@ -83,7 +83,7 @@ process megahit {
                                 set val(id), file(read1), file(read2) from reads_for_megahit
 
                             output:
-                                file'assembly.fasta' into megahit_result
+                                file'${id}.contigs.fa' into megahit_result
 
                             script:
                                 """
@@ -101,7 +101,7 @@ process metaspades {
 
                             script:
                                 """
-                                spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus 
+                                spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus
                                 """
 
 }
