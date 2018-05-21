@@ -87,7 +87,7 @@ process megahit {
 
                             script:
                                 """
-
+                                megahit -m $params.mem -t $params.cpus -o . --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
 process metaspades {
@@ -101,7 +101,7 @@ process metaspades {
 
                             script:
                                 """
-
+                                spades.py -o . --meta -1 $read1 -2 $read2 --careful -t $params.cpus -m $params.mem
                                 """
 
 }
