@@ -97,7 +97,7 @@ process metaspades {
                                 set val(id), file(read1), file(read2) from reads_for_spades
 
                             output:
-                                set val(id), file('assembly.fasta') into spades_result
+                                set val(id), file("${id}_spades/contigs.fasta") into spades_result
 
                             script:
                                 """
