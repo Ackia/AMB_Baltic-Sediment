@@ -126,3 +126,4 @@ process metaspades {
                                 runMetaBat.sh -m 1500 $megahitassembly megahit.bam
                                 """
 }
+*/
