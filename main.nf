@@ -77,7 +77,7 @@ process multiqc {
                               """
 }
 process megahit {
-                            publishDir params.outdir/megahit, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                                 set val(id), file(read1), file(read2) from reads_for_megahit
@@ -87,7 +87,7 @@ process megahit {
 
                             script:
                                 """
-                                megahit -m $params.mem -t $params.cpus -o ${params.outdir}/megahit --out-prefix ${id} -1 $read1 -2 $read2
+                                megahit -m $params.mem -t $params.cpus -o ${id}_megahit --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
 process metaspades {
