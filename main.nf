@@ -90,7 +90,7 @@ process megahit {
 
                                 """
 }
-process meta-spades {
+process metaspades {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
