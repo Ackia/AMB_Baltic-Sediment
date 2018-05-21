@@ -83,7 +83,7 @@ process megahit {
                                 set val(id), file(read1), file(read2) from reads_for_megahit
 
                             output:
-                                set val(id), file("${id}_megahit/${id}.contigs.fa") into megahit_result
+                                file("${id}_megahit/${id}.contigs.fa") into megahit_result
 
                             script:
                                 """
@@ -97,7 +97,7 @@ process metaspades {
                                 set val(id), file(read1), file(read2) from reads_for_spades
 
                             output:
-                                set val(id), file("${id}_spades/contigs.fasta") into spades_result
+                                file("${id}_spades/contigs.fasta") into spades_result
 
                             script:
                                 """
@@ -118,11 +118,11 @@ process metabat {
 
                             script:
                                 """
-                                bowtie2-build $megahitassembly final.contigs
-                                bowtie2 -x final.contigs -1 $read1 -2 $read2 | \
+                                bowtie2-build $megahitassembly ${id}.contigs
+                                bowtie2 -x ${id}.contigs -1 $read1 -2 $read2 | \
                                 samtools view -bS -o megahit_to_sort.bam
-                                samtools sort megahit_to_sort.bam -o megahit.bam
-                                samtools index megahit.bam
-                                runMetaBat.sh -m 1500 $megahitassembly megahit.bam
+                                samtools sort megahit_to_sort.bam -o ${id}_megahit.bam
+                                samtools index ${id}_megahit.bam
+                                runMetaBat.sh -m 1500 $megahitassembly ${id}_megahit.bam
                                 """
 }
