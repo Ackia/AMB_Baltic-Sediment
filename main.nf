@@ -105,7 +105,7 @@ process metaspades {
                                 """
 
 }
-/*process metabat {
+process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
@@ -126,4 +126,3 @@ process metaspades {
                                 runMetaBat.sh -m 1500 $megahitassembly megahit.bam
                                 """
 }
-*/
