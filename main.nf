@@ -83,7 +83,7 @@ process megahit {
                                 set val(id), file(read1), file(read2) from reads_for_megahit
 
                             output:
-                                set val(id), file"${id}.contigs.fa" into megahit_result
+                                set val(id), file("${id}.contigs.fa") into megahit_result
 
                             script:
                                 """
