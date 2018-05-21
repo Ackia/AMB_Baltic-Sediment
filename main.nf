@@ -109,12 +109,12 @@ process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                                set val(id), file(megahitassembly), from megahit_result
-
+                                file(megahitassembly), from megahit_result
+                                set val(id), file(read1), file(read2) from reads_for_metabin_1
 
                             output:
-                                file'assembly.fasta' into spades_result
-                                file(read1), file(read2) from reads_for_metabin
+                                file"${megahitassembly}.metabat-bins1500" into metabat_result_1
+
 
                             script:
                                 """
