@@ -109,7 +109,7 @@ process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                                file'megahitassembly' from megahit_result.collect()
+                                file'megahitassembly' from megahit_result
                                 set val(id), file(read1), file(read2) from reads_for_metabin_1
 
                             output:
