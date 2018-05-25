@@ -113,7 +113,7 @@ process metabat {
                                 set val(id), file(read1), file(read2) from reads_for_metabin_1
 
                             output:
-                                file"${megahitassembly}.metabat-bins1500" into metabat_result_1
+                                set val(id), file"${id}_${megahitassembly}.metabat-bins1500" into metabat_result_1
 
 
                             script:
@@ -125,4 +125,19 @@ process metabat {
                                 samtools index ${id}_megahit.bam
                                 runMetaBat.sh -m 1500 $megahitassembly ${id}_megahit.bam
                                 """
+}
+process checkm {
+                            publishDir params.outdir, mode: 'copy'
+
+                            input:
+                            set val(id), file'megahitassembly' from metabat_result_1
+
+                            output:
+                            file"${megahitassembly}.metabat-bins1500" into checkm_results
+
+
+                            script:
+                            """
+                            checkm lineage_wf -x fa -t 12 Results/megahitassembly.metabat-bins1500/ Results/checkM
+                            """
 }
