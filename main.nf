@@ -45,7 +45,7 @@ process trimming_pe {
                               """
                       }
 
-trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2; reads_for_checkm}
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabat; reads_for_checkm}
 
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
@@ -90,6 +90,7 @@ process megahit {
                                 megahit  -t $params.cpus -o ${id}_megahit --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
+megahit_result.into {megahit_results_1; megahit_result_2}
 process metaspades {
                             publishDir params.outdir, mode: 'copy'
 
@@ -109,11 +110,11 @@ process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                                file'megahitassembly' from megahit_result
-                                set val(id), file(read1), file(read2) from reads_for_checkm
+                                file'megahitassembly' from megahit_result_1
+                                set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                file"${id}_${megahitassembly}.metabat-bins1500" into checkm_results
+                                directory"${id}_${megahitassembly}.metabat-bins1500" into metabat_results
 
 
                             script:
@@ -130,14 +131,15 @@ process checkm {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                            set val(id), file'megahitassembly' from metabat_result_1
+                            directory'metabatresult' from metabat_results
+                            set val(id), file(read1), file(read2) from reads_for_checkm
 
                             output:
-                            file"${megahitassembly}.metabat-bins1500" into checkm_results
+                            file"${id}checkM" into checkm_results
 
 
                             script:
                             """
-                            checkm lineage_wf -x fa -t 12 Results/megahitassembly.metabat-bins1500/ Results/checkM
+                            checkm lineage_wf -x fa -t 12 $metabatresult ${id}checkM
                             """
 }
