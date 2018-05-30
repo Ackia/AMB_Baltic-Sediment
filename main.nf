@@ -98,7 +98,7 @@ process metabat {
                                 set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                file"megahitassembly.metabat-bins1500" into metabat_results
+                                set val(id), file"megahitassembly.metabat-bins1500" into metabat_results
 
 
                             script:
@@ -115,7 +115,7 @@ process checkm {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                            file'metabatresult' from metabat_results
+                            set val(id), file'metabatresult' from metabat_results
 
                             output:
                             file"${id}_checkM" into checkm_results
