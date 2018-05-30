@@ -90,21 +90,6 @@ process megahit {
                                 megahit  -t $params.cpus -o ${id}_megahit --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
-process metaspades {
-                            publishDir params.outdir, mode: 'copy'
-
-                            input:
-                                set val(id), file(read1), file(read2) from reads_for_spades
-
-                            output:
-                                set val(id), file("${id}_spades/contigs.fasta") into spades_result
-
-                            script:
-                                """
-                                spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus
-                                """
-
-}
 process metabat {
                             publishDir params.outdir, mode: 'copy'
 
