@@ -112,7 +112,7 @@ process metabat {
                                 """
 }
 process checkm {
-                            publishDir params.outdir/${id}_, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                             file'metabatresult' from metabat_results
