@@ -45,7 +45,7 @@ process trimming_pe {
                               """
                       }
 
-trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2}
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2, reads_for_checkm}
 
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
@@ -110,10 +110,10 @@ process metabat {
 
                             input:
                                 file'megahitassembly' from megahit_result
-                                set val(id), file(read1), file(read2) from reads_for_metabin_1
+                                set val(id), file(read1), file(read2) from reads_for_checkm
 
                             output:
-                                set val(id), file"${id}_${megahitassembly}.metabat-bins1500" into metabat_result_1
+                                set val(id), file"${id}_${megahitassembly}.metabat-bins1500" into checkm_results
 
 
                             script:
