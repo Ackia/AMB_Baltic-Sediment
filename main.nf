@@ -116,7 +116,7 @@ process checkm {
 
                             input:
                             file'metabatresult' from metabat_results
-                            set val(id) from reads_for_checkm
+                            set val(id), file(read1), file(read2) from reads_for_checkm
                             output:
                             file"${id}_checkM" into checkm_results
 
