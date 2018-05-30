@@ -90,7 +90,6 @@ process megahit {
                                 megahit  -t $params.cpus -o ${id}_megahit --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
-megahit_result.into {megahit_results_1; megahit_result_2}
 process metaspades {
                             publishDir params.outdir, mode: 'copy'
 
@@ -110,7 +109,7 @@ process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
-                                file'megahitassembly' from megahit_result_1
+                                file'megahitassembly' from megahit_result
                                 set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
