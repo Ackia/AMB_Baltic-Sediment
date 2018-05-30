@@ -45,7 +45,7 @@ process trimming_pe {
                               """
                       }
 
-trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2, reads_for_checkm}
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2; reads_for_checkm}
 
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
