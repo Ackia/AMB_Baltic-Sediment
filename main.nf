@@ -4,8 +4,8 @@
  */
 params.reads = ""
 params.outdir = ""
-params.cpus = "2"
-params.mem = "12"
+params.cpus = "12"
+params.mem = "2"
 
 
 // requires --reads for Assembly
