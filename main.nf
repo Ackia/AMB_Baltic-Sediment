@@ -113,7 +113,7 @@ process metabat {
                                 set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                set val(id), file"${id}_${megahitassembly}.metabat-bins1500" into metabat_results
+                                file"${id}_${megahitassembly}.metabat-bins1500" into metabat_results
 
 
                             script:
