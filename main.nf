@@ -29,7 +29,7 @@ println """\
          reads_atropos_pe = Channel
                       .fromFilePairs(params.reads + '*_{1,2}.fastq.gz', size: 2, flat: true)
 process trimming_pe {
-                          publishDir params.outdir/trimmed, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               set val(id), file(read1), file(read2) from reads_atropos_pe
@@ -48,7 +48,7 @@ process trimming_pe {
 trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabat; reads_for_checkm}
 
 process fastqc {
-                          publishDir params.outdir/fastq, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               file reads from reads_for_fastq.collect()
@@ -63,7 +63,7 @@ process fastqc {
                       }
 
 process multiqc {
-                          publishDir params.outdir/multiqc, mode: 'copy'
+                          publishDir params.outdir, mode: 'copy'
 
                           input:
                               file 'fastqc/*' from fastqc_results.collect()
@@ -77,7 +77,7 @@ process multiqc {
                               """
 }
 process megahit {
-                            publishDir params.outdir/megahit, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                                 set val(id), file(read1), file(read2) from reads_for_megahit
@@ -91,7 +91,7 @@ process megahit {
                                 """
 }
 process metabat {
-                            publishDir params.outdir/metabat, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                                 file'megahitassembly' from megahit_result
@@ -112,7 +112,7 @@ process metabat {
                                 """
 }
 process checkm {
-                            publishDir params.outdir/checkm, mode: 'copy'
+                            publishDir params.outdir, mode: 'copy'
 
                             input:
                             file'metabatresult' from metabat_results
