@@ -4,8 +4,8 @@
  */
 params.reads = ""
 params.outdir = ""
-params.cpus = "2"
-params.mem = "12"
+params.cpus = "12"
+params.mem = "2"
 
 
 // requires --reads for Assembly
@@ -45,7 +45,7 @@ process trimming_pe {
                               """
                       }
 
-trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabin_2}
+trimmed_reads_pe.into {reads_for_fastq; reads_for_megahit; reads_for_spades; reads_for_metabin_1; reads_for_metabat; reads_for_checkm}
 
 process fastqc {
                           publishDir params.outdir, mode: 'copy'
@@ -90,30 +90,15 @@ process megahit {
                                 megahit  -t $params.cpus -o ${id}_megahit --out-prefix ${id} -1 $read1 -2 $read2
                                 """
 }
-process metaspades {
-                            publishDir params.outdir, mode: 'copy'
-
-                            input:
-                                set val(id), file(read1), file(read2) from reads_for_spades
-
-                            output:
-                                file("${id}_spades/contigs.fasta") into spades_result
-
-                            script:
-                                """
-                                spades.py -o ${id}_spades --meta -1 $read1 -2 $read2 -t $params.cpus
-                                """
-
-}
 process metabat {
                             publishDir params.outdir, mode: 'copy'
 
                             input:
                                 file'megahitassembly' from megahit_result
-                                set val(id), file(read1), file(read2) from reads_for_metabin_1
+                                set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                file"${megahitassembly}.metabat-bins1500" into metabat_result_1
+                                file"megahitassembly.metabat-bins1500" into metabat_results
 
 
                             script:
@@ -125,4 +110,19 @@ process metabat {
                                 samtools index ${id}_megahit.bam
                                 runMetaBat.sh -m 1500 $megahitassembly ${id}_megahit.bam
                                 """
+}
+process checkm {
+                            publishDir params.outdir, mode: 'copy'
+
+                            input:
+                            file'metabatresult' from metabat_results
+                            set val(id), file(read1), file(read2) from reads_for_checkm
+                            output:
+                            file"${id}_checkM" into checkm_results
+
+
+                            script:
+                            """
+                            checkm lineage_wf -x fa -t $params.cpus $metabatresult ${id}_checkM
+                            """
 }
