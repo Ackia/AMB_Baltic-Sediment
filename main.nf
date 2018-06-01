@@ -40,7 +40,7 @@ process trimming_pe {
                           script:
                               """
                               atropos -a TGGAATTCTCGGGTGCCAAGG -B AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT \
-                                  -T $params.cpu -m 50 --max-n 0 -q 20,20 -pe1 $read1 -pe2 $read2 \
+                                  -T $params.cpus -m 50 --max-n 0 -q 20,20 -pe1 $read1 -pe2 $read2 \
                                   -o ${id}_R1_trimmed.fastq -p ${id}_R2_trimmed.fastq
                               """
                       }
