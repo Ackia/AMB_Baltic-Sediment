@@ -98,7 +98,7 @@ process metabat {
                                 set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                file"megahitassembly.metabat-bins1500" into metabat_results
+                                file"${id}_metabat/bin" into metabat_results
 
 
                             script:
@@ -108,7 +108,8 @@ process metabat {
                                 samtools view -bS -o megahit_to_sort.bam
                                 samtools sort megahit_to_sort.bam -o ${id}_megahit.bam
                                 samtools index ${id}_megahit.bam
-                                runMetaBat.sh -m 1500 $megahitassembly ${id}_megahit.bam
+                                jgi_summarize_bam_contig_depths --outputDepth ${id}_depth.txt ${id}_megahit.bam
+                                metabat2 -i $megahitassembly -a ${id}_depth.txt -o ${id}_metabat/bin -m 1500 -t $params.cpus
                                 """
 }
 process checkm {
