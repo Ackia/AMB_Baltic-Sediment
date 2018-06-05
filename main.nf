@@ -98,7 +98,7 @@ process metabat {
                                 set val(id), file(read1), file(read2) from reads_for_metabat
 
                             output:
-                                file"${id}_metabat/bin" into metabat_results
+                                file"${id}_metabat" into metabat_results
 
 
                             script:
