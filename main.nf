@@ -27,7 +27,7 @@ println """\
          .stripIndent()
 
          reads_atropos_pe = Channel
-                      .fromFilePairs(params.reads + '*_{1,2}.fastq.gz', size: 2, flat: true)
+                      .fromFilePairs(params.reads + '*{1,2}.fastq.gz', size: 2, flat: true)
 process trimming_pe {
                           publishDir params.outdir, mode: 'copy'
 
